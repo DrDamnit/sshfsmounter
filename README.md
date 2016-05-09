@@ -4,13 +4,24 @@ Quick utility to keep track of all the remote file systems you want to connect t
 #How it works
 This script reads /etc/smount.conf for configuration settings to determine what user will be mounting remote directories over SSHFS. Then, it reads /root/.smount for configuration settings for each remote site that you might want to mount to your local file system. When you launch the script, and mount a remote file system, it will mount it at /home/YourUserAsDictatedInTheEtcSmountConfFile/sshfs/[remotedirname] and you'll be able to easily access that remote file system, work on it directly, make changes, etc...
 
-#Contents of /etc/smount.conf
+#Where it stores stuff.
+
+## Global settings
+Global settings are stored in /etc/smount.conf
+Contents of /etc/smount.conf
 Should look like this:
 
      [smount]
      home = /home/youruser/sshfs/
 
 Where *youruser* is the username where you want to access the remote files. Presumably, your own username. But, don't bother doing this manually. use *config set home* in the CLI to set this.
+
+## Site settings
+Site settings are stored in /root/.smount.
+All site settings are stored as pipe-separated values on a single line.
+
+# BEFORE YOU INSTALL
+This script relies on ssh key authentication. Make sure you have properly setup key authentication for the users and servers you plan on using this with!
 
 # Installation
 I recommend that you clone this into /usr/src/, and use a symbolic link from /usr/local/bin/smount -> /usr/src/sshfsmounter/smount.py.

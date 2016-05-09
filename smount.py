@@ -6,37 +6,6 @@ import re
 import logging
 import ConfigParser
 
-# servers = {
-# 		'hphinc@173.165.161.164:/home/hphinc/www':'/home/michael/sshfs/hphinc/',
-# 		'u74062694@www.colorspotink.com:/sales':'/home/michael/sshfs/colorspotink/',
-# 		'mcdb@192.168.10.5:/home/mcdb/www/':'/home/michael/sshfs/mcdb2-dev'
-# 		}
-
-
-# if len(sys.argv) > 1:
-# 	if sys.argv[1] == '-u':
-# 		print "Unmounting everything"
-# 		root='/home/michael/sshfs'
-# 		for d in os.listdir(root):
-# 			cmd = "fusermount -u %s" % os.path.join(root,d)
-# 			print "Running: %s" %cmd
-# 			os.system(cmd)
-# else:
-	
-
-# 	print "If you are prompted for a password, it means you have not setup key authentication for that user! Remember, key authentication should be setup for this root user, not just your user account!"
-
-# 	for x in servers:
-# 		# cmd = "sshfs %x %y" % (x,y)
-# 		# print cmd
-# 		if not os.path.isdir(servers[x]):
-# 			os.makedirs(servers[x])
-
-# 		cmd = "sshfs -oallow_other %s %s" % (x, servers[x])
-# 		print "Running: %s"%cmd
-# 		os.system(cmd)
-
-
 def sizeof_fmt(num, suffix='B'):
 	for unit in ['','K','M','G','T','P','E','Z']:
 		if abs(num) < 1024.0:
@@ -48,13 +17,13 @@ class smounter(object):
 
 	PROMPT="SSHFS Mount> "
 	LOGIC = ""
-	
+
 
 	def __init__(self):
 
 		if not getpass.getuser() == 'root':
 			sys.exit("You must run this script as root. Quitting.")
-			
+
 		readline.set_completer(self.complete)
 		readline.parse_and_bind("tab: complete")
 
@@ -99,7 +68,7 @@ class smounter(object):
 			else:
 				return []
 		return []
-	
+
 	def complete(self, text, state):
 		try:
 			tokens = readline.get_line_buffer().split()
@@ -113,7 +82,7 @@ class smounter(object):
 	def dispVersion(self):
 		print "SSHFS Mounter - Manage SSHFS Mount Points and Credentials."
 		print ""
-		print "Copyright (c) 2015 High Powered Help, Inc. All Rights Reserved."
+		print "Copyright (c) 2016 High Powered Help, Inc. All Rights Reserved."
 		print "This program is free software: you can redistribute it and/or modify"
 		print "it under the terms of the GNU General Public License as published by"
 		print "the Free Software Foundation, either version 3 of the License, or"
@@ -143,7 +112,7 @@ class smounter(object):
 
 	def loadSites(self):
 
-		
+
 
 		self.LOGIC = {
 		'createmount': None,
@@ -214,7 +183,7 @@ class smounter(object):
 		self.config.set('smount','home',dir)
 		# Writing our configuration file to '/etc/smount.conf'
 		with open('/etc/smount.conf', 'wb') as configfile:
-			self.config.write(configfile)		
+			self.config.write(configfile)
 		print "Home directory saved as: " , self.config.get('smount','home')
 
 	def createMount(self):
@@ -250,7 +219,7 @@ class smounter(object):
 			for d in os.listdir(root):
 				cmd = "fusermount -u %s" % os.path.join(root,d)
 				print "Running: %s" %cmd
-				os.system(cmd)			
+				os.system(cmd)
 			print "Done."
 		else:
 			if os.path.isdir(os.path.join(root,name)):
